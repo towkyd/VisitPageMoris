@@ -348,9 +348,66 @@
             animation: spin 30s linear infinite;
         }
 
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+        /* Кнопка управления музыкой */
+        .music-control {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+        }
+
+        .music-btn {
+            background: rgba(42, 159, 214, 0.3);
+            color: white;
+            border: 1px solid rgba(42, 159, 214, 0.5);
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            font-size: 1.5rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(5px);
+            transition: all 0.3s;
+            box-shadow: 0 0 15px rgba(42, 159, 214, 0.3);
+        }
+
+        .music-btn:hover {
+            background: rgba(42, 159, 214, 0.5);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(42, 159, 214, 0.5);
+        }
+
+        .music-btn.muted {
+            background: rgba(255, 0, 0, 0.3);
+            border-color: rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.3);
+        }
+
+        .music-btn.muted:hover {
+            background: rgba(255, 0, 0, 0.5);
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+        }
+
+        /* Индикатор музыки */
+        .music-indicator {
+            position: fixed;
+            bottom: 80px;
+            left: 30px;
+            background: rgba(0, 0, 0, 0.6);
+            color: #2a9fd6;
+            padding: 5px 10px;
+            border-radius: 10px;
+            font-size: 0.8rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(42, 159, 214, 0.3);
+        }
+
+        .music-indicator.show {
+            opacity: 1;
         }
 
         /* Эффект частиц */
@@ -409,6 +466,11 @@
             .support-grid {
                 grid-template-columns: 1fr;
             }
+            
+            .music-control {
+                bottom: 70px;
+                left: 10px;
+            }
         }
     </style>
 </head>
@@ -429,8 +491,24 @@
     <!-- Частицы для атмосферы -->
     <div class="particles" id="particles"></div>
 
+    <!-- Аудио для фоновой музыки -->
+    <audio id="background-music" loop preload="auto">
+        <!-- Замените src на путь к вашему файлу музыки -->
+        <source src="music/game-music.mp3" type="audio/mpeg">
+        <source src="music/game-music.ogg" type="audio/ogg">
+        Ваш браузер не поддерживает аудио элемент.
+    </audio>
+
     <div class="game-controller">
         <i class="fas fa-gamepad"></i>
+    </div>
+
+    <!-- Кнопка управления музыкой -->
+    <div class="music-control">
+        <div class="music-btn" id="music-toggle">
+            <i class="fas fa-volume-up"></i>
+        </div>
+        <div class="music-indicator" id="music-indicator">Музыка включена</div>
     </div>
 
     <div class="container">
@@ -586,24 +664,6 @@
                 });
             });
             
-            // Плавный скролл при нажатии на ссылки
-            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-                anchor.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    
-                    const targetId = this.getAttribute('href');
-                    if(targetId === '#') return;
-                    
-                    const targetElement = document.querySelector(targetId);
-                    if(targetElement) {
-                        window.scrollTo({
-                            top: targetElement.offsetTop - 80,
-                            behavior: 'smooth'
-                        });
-                    }
-                });
-            });
-            
             // Создаем частицы для фона
             createParticles();
             
@@ -631,37 +691,117 @@
                 }
             }
             
-            // Контроль видео (на случай проблем с автовоспроизведением)
-            const videoIframe = document.querySelector('.video-background iframe');
+            // Управление музыкой
+            const musicPlayer = document.getElementById('background-music');
+            const musicToggle = document.getElementById('music-toggle');
+            const musicIcon = musicToggle.querySelector('i');
+            const musicIndicator = document.getElementById('music-indicator');
             
-            // Проверяем, играет ли видео (на некоторых устройствах могут быть ограничения)
-            setTimeout(() => {
-                // Добавляем кнопку для включения звука, если нужно
-                if (window.innerWidth > 768) {
-                    const muteBtn = document.createElement('button');
-                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
-                    muteBtn.style.position = 'fixed';
-                    muteBtn.style.bottom = '70px';
-                    muteBtn.style.right = '20px';
-                    muteBtn.style.background = 'rgba(42, 159, 214, 0.3)';
-                    muteBtn.style.color = 'white';
-                    muteBtn.style.border = '1px solid rgba(42, 159, 214, 0.5)';
-                    muteBtn.style.borderRadius = '50%';
-                    muteBtn.style.width = '40px';
-                    muteBtn.style.height = '40px';
-                    muteBtn.style.zIndex = '100';
-                    muteBtn.style.cursor = 'pointer';
-                    muteBtn.style.fontSize = '1.2rem';
-                    muteBtn.style.backdropFilter = 'blur(5px)';
+            // Настройки музыки
+            let isMusicPlaying = false;
+            let musicVolume = 0.5;
+            
+            // Функция для отображения индикатора
+            function showIndicator(text) {
+                musicIndicator.textContent = text;
+                musicIndicator.classList.add('show');
+                
+                setTimeout(() => {
+                    musicIndicator.classList.remove('show');
+                }, 2000);
+            }
+            
+            // Функция для переключения музыки
+            function toggleMusic() {
+                if (isMusicPlaying) {
+                    // Выключаем музыку
+                    musicPlayer.pause();
+                    musicIcon.className = 'fas fa-volume-mute';
+                    musicToggle.classList.add('muted');
+                    showIndicator('Музыка выключена');
+                    isMusicPlaying = false;
+                } else {
+                    // Включаем музыку
+                    // Пытаемся воспроизвести музыку
+                    const playPromise = musicPlayer.play();
                     
-                    muteBtn.addEventListener('click', function() {
-                        // В реальном проекте здесь должна быть логика управления звуком видео
-                        alert('Для управления звуком видео перейдите на YouTube');
-                    });
-                    
-                    document.body.appendChild(muteBtn);
+                    if (playPromise !== undefined) {
+                        playPromise.then(() => {
+                            // Музыка успешно запущена
+                            musicIcon.className = 'fas fa-volume-up';
+                            musicToggle.classList.remove('muted');
+                            showIndicator('Музыка включена');
+                            isMusicPlaying = true;
+                        }).catch(error => {
+                            // Пользователь не взаимодействовал с сайтом
+                            showIndicator('Нажмите на сайт для включения музыки');
+                            console.log('Автовоспроизведение заблокировано. Нужно взаимодействие пользователя.');
+                            
+                            // Показываем сообщение пользователю
+                            alert('Для включения музыки нажмите на любую часть сайта, а затем на кнопку музыки');
+                            
+                            // Добавляем обработчик для первого клика
+                            document.addEventListener('click', enableAudioOnFirstClick, { once: true });
+                        });
+                    }
                 }
-            }, 3000);
+            }
+            
+            // Функция для включения аудио после первого клика
+            function enableAudioOnFirstClick() {
+                musicPlayer.volume = 0;
+                musicPlayer.play().then(() => {
+                    musicPlayer.pause();
+                    musicPlayer.volume = musicVolume;
+                    showIndicator('Теперь можно включить музыку');
+                }).catch(error => {
+                    console.log('Не удалось включить аудио:', error);
+                });
+            }
+            
+            // Назначаем обработчик клика на кнопку музыки
+            musicToggle.addEventListener('click', toggleMusic);
+            
+            // Настраиваем громкость музыки
+            musicPlayer.volume = musicVolume;
+            
+            // Автозапуск музыки (с задержкой для лучшего UX)
+            setTimeout(() => {
+                // Пытаемся запустить музыку автоматически
+                if (!isMusicPlaying) {
+                    toggleMusic();
+                }
+            }, 1000);
+            
+            // Обработчик для показа сообщения, если музыка не загружена
+            musicPlayer.addEventListener('error', function(e) {
+                console.error('Ошибка загрузки музыки:', e);
+                showIndicator('Файл музыки не найден');
+                
+                // Создаем ссылку для скачивания примера музыки
+                const downloadLink = document.createElement('a');
+                downloadLink.href = 'https://assets.mixkit.co/music/preview/mixkit-game-show-suspense-waiting-667.mp3';
+                downloadLink.textContent = 'Скачать пример музыки';
+                downloadLink.style.display = 'block';
+                downloadLink.style.color = '#2a9fd6';
+                downloadLink.style.marginTop = '10px';
+                downloadLink.target = '_blank';
+                
+                // Добавляем сообщение в индикатор
+                const errorMsg = document.createElement('div');
+                errorMsg.innerHTML = 'Файл музыки не найден. Поместите файл в папку <strong>music/game-music.mp3</strong> или ';
+                errorMsg.appendChild(downloadLink);
+                
+                musicIndicator.innerHTML = '';
+                musicIndicator.appendChild(errorMsg);
+                musicIndicator.classList.add('show');
+                
+                // Убираем сообщение через 5 секунд
+                setTimeout(() => {
+                    musicIndicator.classList.remove('show');
+                    musicIndicator.innerHTML = '';
+                }, 5000);
+            });
         });
     </script>
 </body>
