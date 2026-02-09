@@ -405,7 +405,7 @@ header {
     font-size: 3rem;
     margin-bottom: 20px;
     color: var(--card-color);
-    text-shadow: 0 0 15px #ff0000ba;
+    text-shadow: 0 0 15px #ff0000bd;
     transform: translateZ(30px);
     transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
@@ -710,4 +710,5 @@ footer p {
     }
 
 }
+
 
