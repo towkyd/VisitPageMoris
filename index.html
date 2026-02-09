@@ -3,9 +3,165 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>GameZone | Геймерская визитка</title>
+    <title>Moris | визитка</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
+
+</head>
+<body>
+    <div class="game-controller">
+        <i class="fas fa-gamepad"></i>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="pixel-logo">GameZone</h1>
+            <p class="tagline">Играй. Общайся. Доминируй.</p>
+        </header>
+
+        <section class="avatar-section">
+            <div class="avatar">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Геймерский аватар">
+            </div>
+            <div class="player-info">
+                <h2 class="player-name">Moris</h2>
+                <div class="player-level">Ник в игре - Towkyd </div>
+                <p class="player-desc">
+                    Начинающий блогер по игре Project Cataclysm а также стример
+                    По совместительству работник команды Build отдела
+                </p>
+            </div>
+        </section>
+
+        <section class="social-section">
+            <h2 class="section-title">Мои Социальные Платформы</h2>
+            
+            <div class="social-grid">
+                <div class="social-card tg">
+                    <div class="social-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h3 class="social-title">Telegram Канал</h3>
+                    <p class="social-desc">
+                        Самые свежие анонсы стримов, эксклюзивный контент и общение с коммьюнити.
+                    </p>
+                    <a href="https://t.me/cyberwolf_pro" target="_blank" class="social-btn">Подписаться</a>
+                </div>
+
+                <div class="social-card yt">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3 class="social-title">YouTube Канал</h3>
+                    <p class="social-desc">
+                        Записи стримов, гайды, обзоры игр и турнирные трансляции.
+                    </p>
+                    <a href="https://youtube.com/c/cyberwolfpro" target="_blank" class="social-btn">Смотреть</a>
+                </div>
+
+                <div class="social-card tt">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3 class="social-title">TikTok</h3>
+                    <p class="social-desc">
+                        Короткие и забавные клипы, лучшие моменты со стримов и игровые мемы.
+                    </p>
+                    <a href="https://tiktok.com/@cyberwolf_pro" target="_blank" class="social-btn">Лайкать</a>
+                </div>
+
+                <div class="social-card discord">
+                    <div class="social-icon">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <h3 class="social-title">Discord Сервер</h3>
+                    <p class="social-desc">
+                        Общайся с игроками, находи команду для игры и участвуй в турнирах.
+                    </p>
+                    <a href="https://discord.gg/cyberwolf" target="_blank" class="social-btn">Присоединиться</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <h2 class="section-title">Игровая Статистика</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">2567</div>
+                    <div class="stat-name">Часов в играх</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">42K</div>
+                    <div class="stat-name">Подписчиков</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">127</div>
+                    <div class="stat-name">Турниров сыграно</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">23</div>
+                    <div class="stat-name">Побед в турнирах</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2023 GameZone | Все права защищены | Дизайн в игровом стиле</p>
+            <p>Присоединяйся к нашему коммьюнити и становись частью игрового мира!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация для карточек со статистикой
+        document.addEventListener('DOMContentLoaded', function() {
+            const statCards = document.querySelectorAll('.stat-card');
+            const socialCards = document.querySelectorAll('.social-card');
+            
+            // Простая анимация появления при прокрутке
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Назначаем начальные стили и наблюдаем за элементами
+            statCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            socialCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Анимация для кнопок
+            const buttons = document.querySelectorAll('.social-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+        <style>
         * {
             margin: 0;
             padding: 0;
@@ -317,160 +473,4 @@
             }
         }
     </style>
-</head>
-<body>
-    <div class="game-controller">
-        <i class="fas fa-gamepad"></i>
-    </div>
-
-    <div class="container">
-        <header>
-            <h1 class="pixel-logo">GameZone</h1>
-            <p class="tagline">Играй. Общайся. Доминируй.</p>
-        </header>
-
-        <section class="avatar-section">
-            <div class="avatar">
-                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Геймерский аватар">
-            </div>
-            <div class="player-info">
-                <h2 class="player-name">CyberWolf_Pro</h2>
-                <div class="player-level">Уровень 87 | Платиновый ранг</div>
-                <p class="player-desc">
-                    Профессиональный геймер и стример. Специализируюсь на шутерах от первого лица и MOBA играх. 
-                    Ежедневные стримы, разборы геймплея и полезные гайды. Присоединяйся к нашему коммьюнити, 
-                    чтобы быть в курсе всех игровых событий и участвовать в турнирах!
-                </p>
-            </div>
-        </section>
-
-        <section class="social-section">
-            <h2 class="section-title">Мои Социальные Платформы</h2>
-            
-            <div class="social-grid">
-                <div class="social-card tg">
-                    <div class="social-icon">
-                        <i class="fab fa-telegram"></i>
-                    </div>
-                    <h3 class="social-title">Telegram Канал</h3>
-                    <p class="social-desc">
-                        Самые свежие анонсы стримов, эксклюзивный контент и общение с коммьюнити.
-                    </p>
-                    <a href="https://t.me/cyberwolf_pro" target="_blank" class="social-btn">Подписаться</a>
-                </div>
-
-                <div class="social-card yt">
-                    <div class="social-icon">
-                        <i class="fab fa-youtube"></i>
-                    </div>
-                    <h3 class="social-title">YouTube Канал</h3>
-                    <p class="social-desc">
-                        Записи стримов, гайды, обзоры игр и турнирные трансляции.
-                    </p>
-                    <a href="https://youtube.com/c/cyberwolfpro" target="_blank" class="social-btn">Смотреть</a>
-                </div>
-
-                <div class="social-card tt">
-                    <div class="social-icon">
-                        <i class="fab fa-tiktok"></i>
-                    </div>
-                    <h3 class="social-title">TikTok</h3>
-                    <p class="social-desc">
-                        Короткие и забавные клипы, лучшие моменты со стримов и игровые мемы.
-                    </p>
-                    <a href="https://tiktok.com/@cyberwolf_pro" target="_blank" class="social-btn">Лайкать</a>
-                </div>
-
-                <div class="social-card discord">
-                    <div class="social-icon">
-                        <i class="fab fa-discord"></i>
-                    </div>
-                    <h3 class="social-title">Discord Сервер</h3>
-                    <p class="social-desc">
-                        Общайся с игроками, находи команду для игры и участвуй в турнирах.
-                    </p>
-                    <a href="https://discord.gg/cyberwolf" target="_blank" class="social-btn">Присоединиться</a>
-                </div>
-            </div>
-        </section>
-
-        <section class="stats-section">
-            <h2 class="section-title">Игровая Статистика</h2>
-            
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value">2567</div>
-                    <div class="stat-name">Часов в играх</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">42K</div>
-                    <div class="stat-name">Подписчиков</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">127</div>
-                    <div class="stat-name">Турниров сыграно</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value">23</div>
-                    <div class="stat-name">Побед в турнирах</div>
-                </div>
-            </div>
-        </section>
-
-        <footer>
-            <p>© 2023 GameZone | Все права защищены | Дизайн в игровом стиле</p>
-            <p>Присоединяйся к нашему коммьюнити и становись частью игрового мира!</p>
-        </footer>
-    </div>
-
-    <script>
-        // Анимация для карточек со статистикой
-        document.addEventListener('DOMContentLoaded', function() {
-            const statCards = document.querySelectorAll('.stat-card');
-            const socialCards = document.querySelectorAll('.social-card');
-            
-            // Простая анимация появления при прокрутке
-            const observerOptions = {
-                threshold: 0.2,
-                rootMargin: '0px 0px -50px 0px'
-            };
-            
-            const observer = new IntersectionObserver(function(entries) {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
-                    }
-                });
-            }, observerOptions);
-            
-            // Назначаем начальные стили и наблюдаем за элементами
-            statCards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(card);
-            });
-            
-            socialCards.forEach(card => {
-                card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
-                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
-                observer.observe(card);
-            });
-            
-            // Анимация для кнопок
-            const buttons = document.querySelectorAll('.social-btn');
-            buttons.forEach(button => {
-                button.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05)';
-                });
-                
-                button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
-                });
-            });
-        });
-    </script>
-</body>
 </html>
