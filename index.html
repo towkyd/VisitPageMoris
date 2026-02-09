@@ -12,120 +12,115 @@
         .download-container {
             position: relative;
             width: 100%;
-            height: 230px; /* Высота самой большой картинки */
+            height: 105px; /* Высота основной кнопки */
             margin-bottom: 20px;
         }
         
-        /* Общий стиль для всех картинок */
-        .download-image {
-            position: absolute;
-            width: 100%;
-            height: 105px; /* Высота картинок download_img и download_text */
-            border-radius: 15px;
-            background-size: cover;
-            background-position: center;
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-        
-        /* Первая картинка (download_img) - с ссылкой */
+        /* Основная кнопка (download-img) - нижний слой */
         .download-img {
-            background-image: url(img/download_img.png);
-            z-index: 3;
-            top: 0;
-            left: 0;
-        }
-        
-        /* Вторая картинка (download_text) */
-        .download-text {
-            background-image: url(img/download_text.png);
-            z-index: 2;
-            top: 0;
-            left: 0;
-        }
-        
-        /* Третья картинка (download_charct) - самая высокая, справа */
-        .download-chrct {
-            background-image: url(img/download_charct.png);
-            z-index: 1;
-            height: 230px; /* Высота как у контейнера */
-            width: 35%; /* Занимает правую часть */
-            right: 0;
-            top: 0;
-            left: auto; /* Переопределяем left: 0 из общего стиля */
-        }
-        
-        /* Левая часть для первых двух картинок */
-        .download-left-stack {
             position: absolute;
-            width: 60%; /* Левая часть контейнера */
-            height: 105px;
-            z-index: 10; /* Чтобы была выше правой части */
-            left: 0;
-            top: 0;
-        }
-        
-        /* Обертка для ссылки */
-        .download-link {
-            display: block;
             width: 100%;
             height: 100%;
+            border-radius: 15px;
+            background-image: url(img/download_img.png);
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+        
+        /* Текстовая часть (download-text) - поверх download-img */
+        .download-text {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            background-image: url(img/download_text.png);
+            background-size: cover;
+            background-position: center;
+            z-index: 2;
+            pointer-events: none; /* Чтобы клики проходили сквозь к нижнему слою */
+        }
+        
+        /* Правая часть (download-chrct) - справа и поверх всех */
+        .download-chrct {
+            position: absolute;
+            height: 105px;
+            width: 35%; /* Ширина правой части */
+            border-radius: 15px;
+            background-image: url(img/download_charct.png);
+            background-size: cover;
+            background-position: center;
+            z-index: 3;
+            right: 0;
+            top: 0;
+        }
+        
+        /* Ссылка охватывает всю основную кнопку */
+        .download-link {
+            display: block;
+            position: absolute;
+            width: 65%; /* Левая часть (без правой) */
+            height: 100%;
             text-decoration: none;
-            position: relative;
-            z-index: 4; /* Чтобы ссылка была выше всех картинок */
+            z-index: 4; /* Выше всех визуальных элементов */
+            left: 0;
+            top: 0;
+            border-radius: 15px 0 0 15px;
         }
         
         /* Эффекты при наведении */
-        .download-img:hover {
-            transform: translateY(-5px) scale(1.02);
+        .download-link:hover ~ .download-img {
+            transform: scale(1.02);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            filter: brightness(1.1);
         }
         
-        .download-text:hover {
-            transform: translateY(5px) scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+        .download-link:hover ~ .download-text {
+            transform: scale(1.02) translateY(-2px);
+            filter: brightness(1.05);
         }
         
         .download-chrct:hover {
-            transform: translateX(-5px) scale(1.02);
+            transform: scale(1.05) translateX(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
+            filter: brightness(1.1);
+        }
+        
+        /* Плавные переходы */
+        .download-img,
+        .download-text,
+        .download-chrct {
+            transition: all 0.3s ease;
         }
         
         /* Адаптивность для мобильных */
         @media (max-width: 768px) {
             .download-container {
-                height: 180px;
-            }
-            
-            .download-image {
                 height: 85px;
             }
             
             .download-chrct {
-                height: 180px;
+                height: 85px;
                 width: 40%;
             }
             
-            .download-left-stack {
-                width: 55%;
+            .download-link {
+                width: 60%;
             }
         }
         
         @media (max-width: 480px) {
             .download-container {
-                height: 150px;
-            }
-            
-            .download-image {
                 height: 70px;
             }
             
             .download-chrct {
-                height: 150px;
+                height: 70px;
                 width: 45%;
             }
             
-            .download-left-stack {
-                width: 50%;
+            .download-link {
+                width: 55%;
             }
         }
     </style>
@@ -188,21 +183,19 @@
             </div>
         </section>
         
-        <!-- Объединенная секция загрузки - три картинки наложены -->
+        <!-- Объединенная кнопка - три картинки друг на друге -->
         <div class="download-container">
-            <!-- Левая часть: две картинки наложены друг на друга -->
-            <div class="download-left-stack">
-                <!-- Картинка download_text (вторая по z-index) -->
-                <div class="download-image download-text"></div>
-                
-                <!-- Картинка download_img (первая по z-index, с ссылкой) -->
-                <a href="https://t.me/rba_cs" target="_blank" class="download-link">
-                    <div class="download-image download-img"></div>
-                </a>
-            </div>
+            <!-- Ссылка на левой части -->
+            <a href="https://t.me/rba_cs" target="_blank" class="download-link"></a>
             
-            <!-- Правая часть: одна большая картинка -->
-            <div class="download-image download-chrct"></div>
+            <!-- Нижний слой: download-img -->
+            <div class="download-img"></div>
+            
+            <!-- Средний слой: download-text -->
+            <div class="download-text"></div>
+            
+            <!-- Верхний слой справа: download-chrct -->
+            <div class="download-chrct"></div>
         </div>
 
         <section class="social-section">
