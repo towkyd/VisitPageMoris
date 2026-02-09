@@ -7,6 +7,107 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Подключаем отдельный CSS файл -->
     <link rel="stylesheet" href="css/style_beta.css">
+    <style>
+        /* Стили для объединенной загрузочной секции */
+        .download-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 20px;
+            height: 230px; /* Общая высота двух блоков слева + отступ */
+        }
+        
+        .download-left {
+            flex: 2;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .download-right {
+            flex: 1;
+        }
+        
+        /* Сохраняем оригинальные стили блоков */
+        .download_image {
+            background: #282831;
+            background-size: cover;
+            padding: 0 20px;
+            font-weight: 700;
+            line-height: 19px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 105px;
+            background-image: url(../img/download_img.png);
+        }
+        
+        .download_text {
+            background: #282831;
+            background-size: cover;
+            padding: 0 20px;
+            font-weight: 700;
+            line-height: 19px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 105px;
+            background-image: url(../img/download_text.png);
+        }
+        
+        .download_chrct {
+            background: #282831;
+            background-size: cover;
+            padding: 0 20px;
+            margin-bottom: 20px;
+            font-weight: 700;
+            line-height: 19px;
+            border-radius: 15px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            height: 230px; /* Высота как у двух левых блоков вместе */
+            background-image: url(../img/download_charct.png);
+        }
+        
+        /* Обертка для ссылки */
+        .download-link {
+            display: block;
+            text-decoration: none;
+            width: 100%;
+            height: 100%;
+        }
+        
+        /* Эффекты при наведении */
+        .download_image:hover, 
+        .download_text:hover, 
+        .download_chrct:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.3);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+        
+        /* Адаптивность для мобильных */
+        @media (max-width: 768px) {
+            .download-container {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .download_chrct {
+                height: 150px;
+            }
+            
+            .download-left {
+                order: 2;
+            }
+            
+            .download-right {
+                order: 1;
+            }
+        }
+    </style>
 </head>
 <body>
     <!-- Видеофон -->
@@ -65,6 +166,25 @@
                 </p>
             </div>
         </section>
+        
+        <!-- Объединенная секция загрузки -->
+        <div class="download-container">
+            <!-- Левая часть: два блока друг на друге -->
+            <div class="download-left">
+                <a href="https://t.me/rba_cs" target="_blank" class="download-link">
+                    <div class="download_image" style="background-image: url(../img/download_img.png);">
+                    </div>
+                </a>
+                <div class="download_text" style="background-image: url(../img/download_text.png);">
+                </div>
+            </div>
+            
+            <!-- Правая часть: один большой блок -->
+            <div class="download-right">
+                <div class="download_chrct" style="background-image: url(../img/download_charct.png);">
+                </div>
+            </div>
+        </div>
 
         <section class="social-section">
             <h2 class="section-title">Мои Социальные Платформы</h2>
