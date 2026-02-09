@@ -11,9 +11,11 @@
         /* Стили для объединенной загрузочной секции */
         .download-container {
             position: relative;
-            width: 100%;
-            height: 105px; /* Высота основной кнопки */
-            margin-bottom: 20px;
+            width: 1160px;
+            height: 200px;
+            margin: 0 auto 20px auto;
+            border-radius: 15px;
+            overflow: visible; /* Чтобы правая картинка могла выходить за пределы */
         }
         
         /* Основная кнопка (download-img) - нижний слой */
@@ -26,6 +28,7 @@
             background-size: cover;
             background-position: center;
             z-index: 1;
+            overflow: visible; /* Чтобы правая картинка могла выходить за пределы */
         }
         
         /* Текстовая часть (download-text) - поверх download-img */
@@ -39,88 +42,93 @@
             background-position: center;
             z-index: 2;
             pointer-events: none; /* Чтобы клики проходили сквозь к нижнему слою */
+            transition: transform 0.5s ease;
+            transform-origin: center;
         }
         
-        /* Правая часть (download-chrct) - справа и поверх всех */
+        /* Правая часть (download-chrct) - справа и выходит за пределы, поверх всего */
         .download-chrct {
             position: absolute;
-            height: 105px;
-            width: 35%; /* Ширина правой части */
-            border-radius: 15px;
+            height: 240px; /* Выше основной кнопки */
+            width: 400px; /* Ширина правой части */
             background-image: url(img/download_charct.png);
             background-size: cover;
             background-position: center;
-            z-index: 3;
-            right: 0;
-            top: 0;
+            z-index: 100; /* Максимальный z-index - поверх всего */
+            right: -50px; /* Выходит за правый край на 50px */
+            top: -20px; /* Выходит за верхний край на 20px */
+            pointer-events: none; /* Не нажимается */
         }
         
         /* Ссылка охватывает всю основную кнопку */
         .download-link {
             display: block;
             position: absolute;
-            width: 65%; /* Левая часть (без правой) */
+            width: 100%;
             height: 100%;
             text-decoration: none;
-            z-index: 4; /* Выше всех визуальных элементов */
+            z-index: 50; /* Выше визуальных элементов, но ниже правой картинки */
             left: 0;
             top: 0;
-            border-radius: 15px 0 0 15px;
+            border-radius: 15px;
         }
         
-        /* Эффекты при наведении */
+        /* Эффект при наведении на ссылку */
         .download-link:hover ~ .download-img {
-            transform: scale(1.02);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
             filter: brightness(1.1);
         }
         
+        /* Эффект приближения для download-text при наведении */
         .download-link:hover ~ .download-text {
-            transform: scale(1.02) translateY(-2px);
-            filter: brightness(1.05);
+            transform: scale(1.05);
         }
         
-        .download-chrct:hover {
-            transform: scale(1.05) translateX(-5px);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.4);
-            filter: brightness(1.1);
+        /* Для правой картинки - никаких анимаций при наведении */
+        .download-chrct {
+            transition: none;
         }
         
         /* Плавные переходы */
         .download-img,
-        .download-text,
-        .download-chrct {
-            transition: all 0.3s ease;
+        .download-text {
+            transition: all 0.5s ease;
         }
         
         /* Адаптивность для мобильных */
+        @media (max-width: 1200px) {
+            .download-container {
+                width: 95%;
+                max-width: 1160px;
+            }
+        }
+        
         @media (max-width: 768px) {
             .download-container {
-                height: 85px;
+                height: 150px;
             }
             
             .download-chrct {
-                height: 85px;
-                width: 40%;
-            }
-            
-            .download-link {
-                width: 60%;
+                height: 180px;
+                width: 300px;
+                right: -30px;
+                top: -15px;
             }
         }
         
         @media (max-width: 480px) {
             .download-container {
-                height: 70px;
+                height: 120px;
             }
             
             .download-chrct {
-                height: 70px;
-                width: 45%;
+                height: 140px;
+                width: 200px;
+                right: -20px;
+                top: -10px;
             }
             
-            .download-link {
-                width: 55%;
+            .download-link:hover ~ .download-text {
+                transform: scale(1.03);
             }
         }
     </style>
@@ -185,7 +193,7 @@
         
         <!-- Объединенная кнопка - три картинки друг на друге -->
         <div class="download-container">
-            <!-- Ссылка на левой части -->
+            <!-- Ссылка на всю кнопку -->
             <a href="https://t.me/rba_cs" target="_blank" class="download-link"></a>
             
             <!-- Нижний слой: download-img -->
@@ -194,10 +202,9 @@
             <!-- Средний слой: download-text -->
             <div class="download-text"></div>
             
-            <!-- Верхний слой справа: download-chrct -->
+            <!-- Верхний слой справа: download-chrct (выходит за пределы) -->
             <div class="download-chrct"></div>
         </div>
-
         <section class="social-section">
             <h2 class="section-title">Мои Социальные Платформы</h2>
             
