@@ -5,8 +5,430 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Moris | визитка</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a0a;
+            color: #e0e0e0;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* Видеофон */
+        .video-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -2;
+            overflow: hidden;
+        }
+
+        .video-background iframe {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 100vw;
+            height: 56.25vw;
+            min-height: 100vh;
+            min-width: 177.78vh;
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+        }
+
+        /* Темный оверлей для улучшения читаемости */
+        .dark-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(5, 5, 10, 0.85);
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .pixel-logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #2a9fd6;
+            text-shadow: 
+                0 0 10px rgba(42, 159, 214, 0.8),
+                0 0 20px rgba(42, 159, 214, 0.4),
+                4px 4px 0 #111;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .pixel-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #2a9fd6, transparent);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #aaa;
+            margin-bottom: 30px;
+            font-style: italic;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
+        }
+
+        .avatar-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+            background: rgba(15, 15, 20, 0.7);
+            border-radius: 15px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(42, 159, 214, 0.2);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 4px solid #2a9fd6;
+            box-shadow: 
+                0 0 15px rgba(42, 159, 214, 0.5),
+                inset 0 0 20px rgba(42, 159, 214, 0.1);
+            overflow: hidden;
+            margin-right: 40px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #2a9fd6, #6f42c1, #20c997);
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.5;
+        }
+
+        .player-info {
+            max-width: 500px;
+        }
+
+        .player-name {
+            font-size: 2.5rem;
+            color: #fff;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .player-level {
+            display: inline-block;
+            background: linear-gradient(90deg, #6f42c1, #20c997);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
+            color: white;
+        }
+
+        .player-desc {
+            color: #ccc;
+            line-height: 1.6;
+            font-size: 1.1rem;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-section, .support-section {
+            margin: 50px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #20c997;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px rgba(32, 201, 151, 0.5);
+            position: relative;
+            font-weight: 600;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #20c997, transparent);
+        }
+
+        /* Изменено для расположения карточек в одну линию */
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .social-card, .support-card {
+            background: rgba(20, 20, 30, 0.8);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(10px);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .social-card:hover, .support-card:hover {
+            transform: translateY(-8px);
+            border-color: var(--card-color);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-card::before, .support-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 4px;
+            background: var(--card-color);
+        }
+
+        .social-card.tg { --card-color: #0088cc; }
+        .social-card.yt { --card-color: #ff0000; }
+        .social-card.tt { --card-color: #ff0050; }
+        .social-card.discord { --card-color: #5865f2; }
+        .social-card.donationalerts { --card-color: #ff6b00; }
+        .social-card.boosty { --card-color: #794afa; }
+
+        .social-icon, .support-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--card-color);
+            text-shadow: 0 0 10px var(--card-color);
+        }
+
+        .social-title, .support-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+            font-weight: 600;
+        }
+
+        .social-desc, .support-desc {
+            color: #aaa;
+            margin-bottom: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-btn, .support-btn {
+            display: inline-block;
+            background: var(--card-color);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px var(--card-color);
+            margin-top: auto;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
+        }
+
+        .social-btn:hover, .support-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--card-color);
+        }
+
+        /* Секция поддержки */
+        .support-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .support-icon {
+            font-size: 3.5rem;
+        }
+
+        .support-title {
+            font-size: 1.8rem;
+        }
+
+        .support-btn {
+            padding: 12px 30px;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(42, 159, 214, 0.2);
+            color: #888;
+            font-size: 0.9rem;
+            background: rgba(15, 15, 20, 0.7);
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        footer p {
+            margin-bottom: 10px;
+            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+        }
+
+        .game-controller {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2.5rem;
+            color: #6f42c1;
+            opacity: 0.2;
+            z-index: 0;
+            animation: spin 30s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* Эффект частиц */
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .particle {
+            position: absolute;
+            background: rgba(42, 159, 214, 0.2);
+            border-radius: 50%;
+            animation: float-particle 20s infinite linear;
+        }
+
+        @keyframes float-particle {
+            0% { transform: translateY(100vh) translateX(0); }
+            100% { transform: translateY(-100px) translateX(100px); }
+        }
+
+        /* Адаптивность */
+        @media (max-width: 1100px) {
+            .social-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .avatar-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .avatar {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+            
+            .pixel-logo {
+                font-size: 2.5rem;
+            }
+            
+            .player-name {
+                font-size: 2rem;
+            }
+            
+            .social-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .support-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
 </head>
 <body>
+    <!-- Видеофон -->
+    <div class="video-background">
+        <iframe 
+            src="https://www.youtube.com/embed/lVa8dP6AaOU?autoplay=1&mute=1&loop=1&playlist=lVa8dP6AaOU&controls=0&showinfo=0&modestbranding=1&rel=0&disablekb=1"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+    </div>
+    
+    <!-- Темный оверлей для читаемости -->
+    <div class="dark-overlay"></div>
+    
+    <!-- Частицы для атмосферы -->
+    <div class="particles" id="particles"></div>
+
     <div class="game-controller">
         <i class="fas fa-gamepad"></i>
     </div>
@@ -26,7 +448,8 @@
                 <div class="player-level">Ник в игре - Towkyd</div>
                 <p class="player-desc">
                     Начинающий блогер по игре Project Cataclysm, а также стример.
-                    По совместительству работник команды Build отдела.
+                    По совместительству работник команды Build отдела. Создаю контент,
+                    связанный с геймплеем, новостями и обновлениями игры.
                 </p>
             </div>
         </section>
@@ -42,6 +465,7 @@
                     <h3 class="social-title">Telegram Канал</h3>
                     <p class="social-desc">
                         Самые свежие анонсы стримов, эксклюзивный контент и общение с коммьюнити.
+                        Новости о Project Cataclysm и не только.
                     </p>
                     <a href="https://t.me/moris_channel" target="_blank" class="social-btn">Подписаться</a>
                 </div>
@@ -52,7 +476,8 @@
                     </div>
                     <h3 class="social-title">YouTube Канал</h3>
                     <p class="social-desc">
-                        Записи стримов, гайды, а также игровые новости по Project Cataclysm.
+                        Записи стримов, гайды, обзоры и новости по Project Cataclysm.
+                        Регулярные обновления и качественный контент.
                     </p>
                     <a href="https://youtube.com/@Moris_Channel" target="_blank" class="social-btn">Смотреть</a>
                 </div>
@@ -63,7 +488,8 @@
                     </div>
                     <h3 class="social-title">TikTok</h3>
                     <p class="social-desc">
-                        Короткие и забавные клипы, лучшие моменты со стримов и игровые мемы.
+                        Короткие и забавные клипы, лучшие моменты со стримов.
+                        Игровые мемы и короткие гайды в формате TikTok.
                     </p>
                     <a href="https://tiktok.com/@moris_gaming" target="_blank" class="social-btn">Лайкать</a>
                 </div>
@@ -74,7 +500,8 @@
                     </div>
                     <h3 class="social-title">Discord Сервер</h3>
                     <p class="social-desc">
-                        Общайся с игроками, находи команду для игры, участвуй в обсуждениях.
+                        Общайся с игроками, находи команду для игры.
+                        Обсуждение Project Cataclysm и организация совместных игр.
                     </p>
                     <a href="https://discord.gg/moris" target="_blank" class="social-btn">Присоединиться</a>
                 </div>
@@ -93,6 +520,7 @@
                     <p class="support-desc">
                         Поддержите мою деятельность финансово через DonationAlerts. 
                         Ваша поддержка поможет улучшить качество контента и стримов.
+                        Любая помощь очень важна для развития канала.
                     </p>
                     <a href="https://www.donationalerts.com/r/moris" target="_blank" class="support-btn">Поддержать</a>
                 </div>
@@ -105,6 +533,7 @@
                     <p class="support-desc">
                         Подпишитесь на Boosty для получения эксклюзивного контента, 
                         раннего доступа к видео и других бонусов для подписчиков.
+                        Уникальные материалы только для подписчиков.
                     </p>
                     <a href="https://boosty.to/moris" target="_blank" class="support-btn">Подписаться</a>
                 </div>
@@ -112,8 +541,9 @@
         </section>
 
         <footer>
-            <p>© 2023 Moris | Все права защищены | Дизайн в игровом стиле</p>
+            <p>© 2023 Moris | Все права защищены | Дизайн в темном игровом стиле</p>
             <p>Присоединяйся к коммьюнити и становись частью игрового мира!</p>
+            <p>Project Cataclysm | Towkyd | Build отдел</p>
         </footer>
     </div>
 
@@ -173,396 +603,66 @@
                     }
                 });
             });
+            
+            // Создаем частицы для фона
+            createParticles();
+            
+            function createParticles() {
+                const particlesContainer = document.getElementById('particles');
+                const particleCount = 30;
+                
+                for (let i = 0; i < particleCount; i++) {
+                    const particle = document.createElement('div');
+                    particle.classList.add('particle');
+                    
+                    // Случайные параметры для частицы
+                    const size = Math.random() * 5 + 2;
+                    const posX = Math.random() * 100;
+                    const delay = Math.random() * 20;
+                    const duration = Math.random() * 10 + 15;
+                    
+                    particle.style.width = `${size}px`;
+                    particle.style.height = `${size}px`;
+                    particle.style.left = `${posX}%`;
+                    particle.style.animationDelay = `${delay}s`;
+                    particle.style.animationDuration = `${duration}s`;
+                    
+                    particlesContainer.appendChild(particle);
+                }
+            }
+            
+            // Контроль видео (на случай проблем с автовоспроизведением)
+            const videoIframe = document.querySelector('.video-background iframe');
+            
+            // Проверяем, играет ли видео (на некоторых устройствах могут быть ограничения)
+            setTimeout(() => {
+                // Добавляем кнопку для включения звука, если нужно
+                if (window.innerWidth > 768) {
+                    const muteBtn = document.createElement('button');
+                    muteBtn.innerHTML = '<i class="fas fa-volume-mute"></i>';
+                    muteBtn.style.position = 'fixed';
+                    muteBtn.style.bottom = '70px';
+                    muteBtn.style.right = '20px';
+                    muteBtn.style.background = 'rgba(42, 159, 214, 0.3)';
+                    muteBtn.style.color = 'white';
+                    muteBtn.style.border = '1px solid rgba(42, 159, 214, 0.5)';
+                    muteBtn.style.borderRadius = '50%';
+                    muteBtn.style.width = '40px';
+                    muteBtn.style.height = '40px';
+                    muteBtn.style.zIndex = '100';
+                    muteBtn.style.cursor = 'pointer';
+                    muteBtn.style.fontSize = '1.2rem';
+                    muteBtn.style.backdropFilter = 'blur(5px)';
+                    
+                    muteBtn.addEventListener('click', function() {
+                        // В реальном проекте здесь должна быть логика управления звуком видео
+                        alert('Для управления звуком видео перейдите на YouTube');
+                    });
+                    
+                    document.body.appendChild(muteBtn);
+                }
+            }, 3000);
         });
     </script>
 </body>
-     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-
-        body {
-            background-color: #0a0a1a;
-            color: #fff;
-            min-height: 100vh;
-            overflow-x: hidden;
-            background-image: 
-                radial-gradient(circle at 10% 20%, rgba(28, 58, 173, 0.15) 0%, transparent 20%),
-                radial-gradient(circle at 90% 80%, rgba(255, 10, 100, 0.15) 0%, transparent 20%);
-        }
-
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            padding: 20px;
-        }
-
-        header {
-            text-align: center;
-            padding: 40px 0 30px;
-            position: relative;
-        }
-
-        .pixel-logo {
-            font-size: 3.5rem;
-            font-weight: 800;
-            text-transform: uppercase;
-            letter-spacing: 3px;
-            color: #00f3ff;
-            text-shadow: 
-                0 0 10px #00f3ff,
-                0 0 20px #00f3ff,
-                4px 4px 0 #ff00ff;
-            margin-bottom: 15px;
-            position: relative;
-            display: inline-block;
-        }
-
-        .pixel-logo::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 10%;
-            width: 80%;
-            height: 4px;
-            background: linear-gradient(90deg, transparent, #ff00ff, transparent);
-        }
-
-        .tagline {
-            font-size: 1.2rem;
-            color: #a0a0ff;
-            margin-bottom: 30px;
-            font-style: italic;
-        }
-
-        .avatar-section {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            margin-bottom: 40px;
-            flex-wrap: wrap;
-        }
-
-        .avatar {
-            width: 180px;
-            height: 180px;
-            border-radius: 50%;
-            border: 5px solid #00f3ff;
-            box-shadow: 
-                0 0 20px #00f3ff,
-                inset 0 0 20px rgba(0, 243, 255, 0.3);
-            overflow: hidden;
-            margin-right: 40px;
-            position: relative;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-15px); }
-        }
-
-        .avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .avatar::before {
-            content: '';
-            position: absolute;
-            top: -10px;
-            left: -10px;
-            right: -10px;
-            bottom: -10px;
-            border-radius: 50%;
-            background: linear-gradient(45deg, #00f3ff, #ff00ff, #00ff9d);
-            z-index: -1;
-            filter: blur(15px);
-            opacity: 0.7;
-        }
-
-        .player-info {
-            max-width: 500px;
-        }
-
-        .player-name {
-            font-size: 2.5rem;
-            color: #ff00ff;
-            text-shadow: 0 0 10px #ff00ff;
-            margin-bottom: 10px;
-        }
-
-        .player-level {
-            display: inline-block;
-            background: linear-gradient(90deg, #ff5500, #ffaa00);
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-weight: bold;
-            margin-bottom: 15px;
-            box-shadow: 0 0 10px #ff5500;
-        }
-
-        .player-desc {
-            color: #ccccff;
-            line-height: 1.6;
-            font-size: 1.1rem;
-        }
-
-        .social-section {
-            margin: 50px 0;
-        }
-
-        .section-title {
-            font-size: 2rem;
-            color: #00ff9d;
-            text-align: center;
-            margin-bottom: 40px;
-            text-shadow: 0 0 10px #00ff9d;
-            position: relative;
-        }
-
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 100px;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #00ff9d, transparent);
-        }
-
-        /* Изменено для расположения карточек в одну линию */
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .social-card {
-            background: rgba(20, 20, 60, 0.7);
-            border-radius: 15px;
-            padding: 25px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .social-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--card-color);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .social-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: var(--card-color);
-        }
-
-        .social-card.tg { --card-color: #0088cc; }
-        .social-card.yt { --card-color: #ff0000; }
-        .social-card.tt { --card-color: #ff0050; }
-        .social-card.discord { --card-color: #5865f2; }
-        .social-card.donationalerts { --card-color: #ff6b00; }
-        .social-card.boosty { --card-color: #794afa; }
-
-        .social-icon {
-            font-size: 3rem;
-            margin-bottom: 20px;
-            color: var(--card-color);
-            text-shadow: 0 0 10px var(--card-color);
-        }
-
-        .social-title {
-            font-size: 1.5rem;
-            margin-bottom: 10px;
-            color: #fff;
-        }
-
-        .social-desc {
-            color: #a0a0ff;
-            margin-bottom: 20px;
-            line-height: 1.5;
-            flex-grow: 1;
-        }
-
-        .social-btn {
-            display: inline-block;
-            background: var(--card-color);
-            color: white;
-            padding: 10px 25px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 0 10px var(--card-color);
-            margin-top: auto;
-        }
-
-        .social-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--card-color);
-        }
-
-        /* Секция поддержки */
-        .support-section {
-            margin: 60px 0;
-        }
-
-        .support-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
-            margin-top: 30px;
-        }
-
-        .support-card {
-            background: rgba(20, 20, 60, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            text-align: center;
-            transition: all 0.3s ease;
-            border: 2px solid transparent;
-            position: relative;
-            overflow: hidden;
-            backdrop-filter: blur(5px);
-            height: 100%;
-            display: flex;
-            flex-direction: column;
-        }
-
-        .support-card:hover {
-            transform: translateY(-10px);
-            border-color: var(--card-color);
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
-        }
-
-        .support-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            height: 5px;
-            background: var(--card-color);
-        }
-
-        .support-card.donationalerts { --card-color: #ff6b00; }
-        .support-card.boosty { --card-color: #794afa; }
-
-        .support-icon {
-            font-size: 3.5rem;
-            margin-bottom: 20px;
-            color: var(--card-color);
-            text-shadow: 0 0 10px var(--card-color);
-        }
-
-        .support-title {
-            font-size: 1.8rem;
-            margin-bottom: 15px;
-            color: #fff;
-        }
-
-        .support-desc {
-            color: #a0a0ff;
-            margin-bottom: 25px;
-            line-height: 1.6;
-            flex-grow: 1;
-        }
-
-        .support-btn {
-            display: inline-block;
-            background: var(--card-color);
-            color: white;
-            padding: 12px 30px;
-            border-radius: 30px;
-            text-decoration: none;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 0 10px var(--card-color);
-            font-size: 1.1rem;
-            margin-top: auto;
-        }
-
-        .support-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--card-color);
-        }
-
-        footer {
-            text-align: center;
-            padding: 30px 0;
-            margin-top: 40px;
-            border-top: 1px solid rgba(0, 243, 255, 0.3);
-            color: #a0a0ff;
-            font-size: 0.9rem;
-        }
-
-        .game-controller {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            font-size: 2.5rem;
-            color: #ff00ff;
-            opacity: 0.3;
-            z-index: -1;
-            animation: spin 20s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
-        /* Адаптивность */
-        @media (max-width: 1100px) {
-            .social-grid {
-                grid-template-columns: repeat(2, 1fr);
-            }
-        }
-
-        @media (max-width: 768px) {
-            .avatar-section {
-                flex-direction: column;
-                text-align: center;
-            }
-            
-            .avatar {
-                margin-right: 0;
-                margin-bottom: 30px;
-            }
-            
-            .pixel-logo {
-                font-size: 2.5rem;
-            }
-            
-            .player-name {
-                font-size: 2rem;
-            }
-            
-            .social-grid {
-                grid-template-columns: 1fr;
-            }
-            
-            .support-grid {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
 </html>
