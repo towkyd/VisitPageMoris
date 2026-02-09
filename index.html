@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GameZone | Геймерская визитка</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #0a0a1a;
+            color: #fff;
+            min-height: 100vh;
+            overflow-x: hidden;
+            background-image: 
+                radial-gradient(circle at 10% 20%, rgba(28, 58, 173, 0.15) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 10, 100, 0.15) 0%, transparent 20%);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            padding: 40px 0 30px;
+            position: relative;
+        }
+
+        .pixel-logo {
+            font-size: 3.5rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            color: #00f3ff;
+            text-shadow: 
+                0 0 10px #00f3ff,
+                0 0 20px #00f3ff,
+                4px 4px 0 #ff00ff;
+            margin-bottom: 15px;
+            position: relative;
+            display: inline-block;
+        }
+
+        .pixel-logo::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 10%;
+            width: 80%;
+            height: 4px;
+            background: linear-gradient(90deg, transparent, #ff00ff, transparent);
+        }
+
+        .tagline {
+            font-size: 1.2rem;
+            color: #a0a0ff;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .avatar-section {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+
+        .avatar {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            border: 5px solid #00f3ff;
+            box-shadow: 
+                0 0 20px #00f3ff,
+                inset 0 0 20px rgba(0, 243, 255, 0.3);
+            overflow: hidden;
+            margin-right: 40px;
+            position: relative;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .avatar::before {
+            content: '';
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #00f3ff, #ff00ff, #00ff9d);
+            z-index: -1;
+            filter: blur(15px);
+            opacity: 0.7;
+        }
+
+        .player-info {
+            max-width: 500px;
+        }
+
+        .player-name {
+            font-size: 2.5rem;
+            color: #ff00ff;
+            text-shadow: 0 0 10px #ff00ff;
+            margin-bottom: 10px;
+        }
+
+        .player-level {
+            display: inline-block;
+            background: linear-gradient(90deg, #ff5500, #ffaa00);
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            box-shadow: 0 0 10px #ff5500;
+        }
+
+        .player-desc {
+            color: #ccccff;
+            line-height: 1.6;
+            font-size: 1.1rem;
+        }
+
+        .social-section {
+            margin: 50px 0;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: #00ff9d;
+            text-align: center;
+            margin-bottom: 40px;
+            text-shadow: 0 0 10px #00ff9d;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #00ff9d, transparent);
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .social-card {
+            background: rgba(20, 20, 60, 0.7);
+            border-radius: 15px;
+            padding: 25px;
+            text-align: center;
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+            position: relative;
+            overflow: hidden;
+            backdrop-filter: blur(5px);
+        }
+
+        .social-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--card-color);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+            background: var(--card-color);
+        }
+
+        .social-card.tg { --card-color: #0088cc; }
+        .social-card.yt { --card-color: #ff0000; }
+        .social-card.tt { --card-color: #ff0050; }
+        .social-card.discord { --card-color: #5865f2; }
+
+        .social-icon {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            color: var(--card-color);
+            text-shadow: 0 0 10px var(--card-color);
+        }
+
+        .social-title {
+            font-size: 1.5rem;
+            margin-bottom: 10px;
+            color: #fff;
+        }
+
+        .social-desc {
+            color: #a0a0ff;
+            margin-bottom: 20px;
+            line-height: 1.5;
+        }
+
+        .social-btn {
+            display: inline-block;
+            background: var(--card-color);
+            color: white;
+            padding: 10px 25px;
+            border-radius: 30px;
+            text-decoration: none;
+            font-weight: bold;
+            transition: all 0.3s;
+            box-shadow: 0 0 10px var(--card-color);
+        }
+
+        .social-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px var(--card-color);
+        }
+
+        .stats-section {
+            margin: 60px 0;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .stat-card {
+            background: rgba(30, 30, 80, 0.6);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            border-left: 5px solid #00f3ff;
+        }
+
+        .stat-value {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: #00f3ff;
+            margin-bottom: 5px;
+        }
+
+        .stat-name {
+            color: #a0a0ff;
+            font-size: 1.1rem;
+        }
+
+        footer {
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+            border-top: 1px solid rgba(0, 243, 255, 0.3);
+            color: #a0a0ff;
+            font-size: 0.9rem;
+        }
+
+        .game-controller {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            font-size: 2.5rem;
+            color: #ff00ff;
+            opacity: 0.3;
+            z-index: -1;
+            animation: spin 20s linear infinite;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 768px) {
+            .avatar-section {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .avatar {
+                margin-right: 0;
+                margin-bottom: 30px;
+            }
+            
+            .pixel-logo {
+                font-size: 2.5rem;
+            }
+            
+            .player-name {
+                font-size: 2rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="game-controller">
+        <i class="fas fa-gamepad"></i>
+    </div>
+
+    <div class="container">
+        <header>
+            <h1 class="pixel-logo">GameZone</h1>
+            <p class="tagline">Играй. Общайся. Доминируй.</p>
+        </header>
+
+        <section class="avatar-section">
+            <div class="avatar">
+                <img src="https://images.unsplash.com/photo-1518709268805-4e9042af2176?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=686&q=80" alt="Геймерский аватар">
+            </div>
+            <div class="player-info">
+                <h2 class="player-name">CyberWolf_Pro</h2>
+                <div class="player-level">Уровень 87 | Платиновый ранг</div>
+                <p class="player-desc">
+                    Профессиональный геймер и стример. Специализируюсь на шутерах от первого лица и MOBA играх. 
+                    Ежедневные стримы, разборы геймплея и полезные гайды. Присоединяйся к нашему коммьюнити, 
+                    чтобы быть в курсе всех игровых событий и участвовать в турнирах!
+                </p>
+            </div>
+        </section>
+
+        <section class="social-section">
+            <h2 class="section-title">Мои Социальные Платформы</h2>
+            
+            <div class="social-grid">
+                <div class="social-card tg">
+                    <div class="social-icon">
+                        <i class="fab fa-telegram"></i>
+                    </div>
+                    <h3 class="social-title">Telegram Канал</h3>
+                    <p class="social-desc">
+                        Самые свежие анонсы стримов, эксклюзивный контент и общение с коммьюнити.
+                    </p>
+                    <a href="https://t.me/cyberwolf_pro" target="_blank" class="social-btn">Подписаться</a>
+                </div>
+
+                <div class="social-card yt">
+                    <div class="social-icon">
+                        <i class="fab fa-youtube"></i>
+                    </div>
+                    <h3 class="social-title">YouTube Канал</h3>
+                    <p class="social-desc">
+                        Записи стримов, гайды, обзоры игр и турнирные трансляции.
+                    </p>
+                    <a href="https://youtube.com/c/cyberwolfpro" target="_blank" class="social-btn">Смотреть</a>
+                </div>
+
+                <div class="social-card tt">
+                    <div class="social-icon">
+                        <i class="fab fa-tiktok"></i>
+                    </div>
+                    <h3 class="social-title">TikTok</h3>
+                    <p class="social-desc">
+                        Короткие и забавные клипы, лучшие моменты со стримов и игровые мемы.
+                    </p>
+                    <a href="https://tiktok.com/@cyberwolf_pro" target="_blank" class="social-btn">Лайкать</a>
+                </div>
+
+                <div class="social-card discord">
+                    <div class="social-icon">
+                        <i class="fab fa-discord"></i>
+                    </div>
+                    <h3 class="social-title">Discord Сервер</h3>
+                    <p class="social-desc">
+                        Общайся с игроками, находи команду для игры и участвуй в турнирах.
+                    </p>
+                    <a href="https://discord.gg/cyberwolf" target="_blank" class="social-btn">Присоединиться</a>
+                </div>
+            </div>
+        </section>
+
+        <section class="stats-section">
+            <h2 class="section-title">Игровая Статистика</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">2567</div>
+                    <div class="stat-name">Часов в играх</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">42K</div>
+                    <div class="stat-name">Подписчиков</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">127</div>
+                    <div class="stat-name">Турниров сыграно</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">23</div>
+                    <div class="stat-name">Побед в турнирах</div>
+                </div>
+            </div>
+        </section>
+
+        <footer>
+            <p>© 2023 GameZone | Все права защищены | Дизайн в игровом стиле</p>
+            <p>Присоединяйся к нашему коммьюнити и становись частью игрового мира!</p>
+        </footer>
+    </div>
+
+    <script>
+        // Анимация для карточек со статистикой
+        document.addEventListener('DOMContentLoaded', function() {
+            const statCards = document.querySelectorAll('.stat-card');
+            const socialCards = document.querySelectorAll('.social-card');
+            
+            // Простая анимация появления при прокрутке
+            const observerOptions = {
+                threshold: 0.2,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver(function(entries) {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.style.opacity = '1';
+                        entry.target.style.transform = 'translateY(0)';
+                    }
+                });
+            }, observerOptions);
+            
+            // Назначаем начальные стили и наблюдаем за элементами
+            statCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            socialCards.forEach(card => {
+                card.style.opacity = '0';
+                card.style.transform = 'translateY(20px)';
+                card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
+                observer.observe(card);
+            });
+            
+            // Анимация для кнопок
+            const buttons = document.querySelectorAll('.social-btn');
+            buttons.forEach(button => {
+                button.addEventListener('mouseenter', function() {
+                    this.style.transform = 'scale(1.05)';
+                });
+                
+                button.addEventListener('mouseleave', function() {
+                    this.style.transform = 'scale(1)';
+                });
+            });
+        });
+    </script>
+</body>
+</html>
