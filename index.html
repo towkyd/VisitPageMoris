@@ -20,7 +20,7 @@
             overflow-x: hidden;
         }
 
-        /* Видеофон */
+        /* Видеофон из локального файла */
         .video-background {
             position: fixed;
             top: 0;
@@ -31,16 +31,16 @@
             overflow: hidden;
         }
 
-        .video-background iframe {
+        .video-background video {
             position: absolute;
             top: 50%;
             left: 50%;
-            width: 100vw;
-            height: 56.25vw;
-            min-height: 100vh;
-            min-width: 177.78vh;
+            min-width: 100%;
+            min-height: 100%;
+            width: auto;
+            height: auto;
             transform: translate(-50%, -50%);
-            pointer-events: none;
+            object-fit: cover;
         }
 
         /* Темный оверлей для улучшения читаемости */
@@ -101,54 +101,83 @@
             text-shadow: 0 0 5px rgba(0, 0, 0, 0.7);
         }
 
+        /* Avatar Section с плавной 3D анимацией */
         .avatar-section {
             display: flex;
             justify-content: center;
             align-items: center;
             margin-bottom: 40px;
             flex-wrap: wrap;
-            background: rgba(15, 15, 20, 0.7);
-            border-radius: 15px;
-            padding: 30px;
-            backdrop-filter: blur(10px);
-            border: 1px solid rgba(42, 159, 214, 0.2);
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            background: rgba(15, 15, 20, 0.8);
+            border-radius: 20px;
+            padding: 40px;
+            backdrop-filter: blur(15px);
+            border: 2px solid rgba(42, 159, 214, 0.3);
+            box-shadow: 
+                0 20px 40px rgba(0, 0, 0, 0.6),
+                inset 0 0 60px rgba(42, 159, 214, 0.1);
             transform-style: preserve-3d;
-            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transform: perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+            transition: transform 0.3s ease-out, 
+                        box-shadow 0.3s ease,
+                        border-color 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            cursor: pointer;
         }
 
-        .avatar-section:hover {
-            transform: perspective(1000px) rotateY(10deg) scale3d(1.02, 1.02, 1.02);
+        /* Эффект свечения при наведении */
+        .avatar-section::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                #2a9fd6, 
+                #6f42c1, 
+                #20c997,
+                #2a9fd6);
+            border-radius: 22px;
+            z-index: -1;
+            opacity: 0;
+            filter: blur(25px);
+            transition: opacity 0.3s ease;
+        }
+
+        .avatar-section:hover::before {
+            opacity: 0.5;
         }
 
         .avatar {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
             border-radius: 50%;
-            border: 4px solid #2a9fd6;
-            box-shadow: 
-                0 0 15px rgba(42, 159, 214, 0.5),
-                inset 0 0 20px rgba(42, 159, 214, 0.1);
+            border: 4px solid transparent;
+            background: linear-gradient(45deg, #2a9fd6, #6f42c1, #20c997);
+            padding: 4px;
             overflow: hidden;
-            margin-right: 40px;
+            margin-right: 50px;
             position: relative;
-            animation: float 3s ease-in-out infinite;
             transform-style: preserve-3d;
+            transition: transform 0.3s ease-out;
+            box-shadow: 
+                0 0 40px rgba(42, 159, 214, 0.5),
+                inset 0 0 40px rgba(42, 159, 214, 0.2);
         }
 
-        @keyframes float {
-            0%, 100% { transform: translateY(0) rotateY(0deg); }
-            25% { transform: translateY(-10px) rotateY(5deg); }
-            75% { transform: translateY(-5px) rotateY(-5deg); }
-        }
-
-        .avatar img {
+        .avatar-img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            border-radius: 50%;
             transform: translateZ(20px);
+            transition: transform 0.3s ease-out;
+            border: 2px solid #0a0a0a;
         }
 
+        /* Анимация вращения градиента */
         .avatar::before {
             content: '';
             position: absolute;
@@ -157,44 +186,71 @@
             right: -10px;
             bottom: -10px;
             border-radius: 50%;
-            background: linear-gradient(45deg, #2a9fd6, #6f42c1, #20c997);
+            background: linear-gradient(45deg, #2a9fd6, #6f42c1, #20c997, #2a9fd6);
             z-index: -1;
-            filter: blur(15px);
-            opacity: 0.5;
-            transform: translateZ(-10px);
+            filter: blur(20px);
+            opacity: 0.6;
+            transform: translateZ(-15px);
+        }
+
+        /* Эффект свечения внутри аватара */
+        .avatar::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            border-radius: 50%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.15) 0%, transparent 70%);
+            z-index: 1;
+            pointer-events: none;
         }
 
         .player-info {
-            max-width: 500px;
+            max-width: 550px;
+            transform-style: preserve-3d;
         }
 
         .player-name {
-            font-size: 2.5rem;
+            font-size: 2.8rem;
             color: #fff;
-            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
-            margin-bottom: 10px;
-            font-weight: 600;
+            text-shadow: 0 0 20px rgba(42, 159, 214, 0.5);
+            margin-bottom: 15px;
+            font-weight: 700;
             transform: translateZ(30px);
+            transition: transform 0.3s ease-out;
+            background: linear-gradient(90deg, #2a9fd6, #6f42c1, #20c997);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .player-level {
             display: inline-block;
             background: linear-gradient(90deg, #6f42c1, #20c997);
-            padding: 5px 15px;
-            border-radius: 20px;
+            padding: 8px 20px;
+            border-radius: 25px;
             font-weight: bold;
-            margin-bottom: 15px;
-            box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
+            margin-bottom: 20px;
+            box-shadow: 0 0 20px rgba(111, 66, 193, 0.5);
             color: white;
-            transform: translateZ(20px);
+            transform: translateZ(25px);
+            transition: transform 0.3s ease-out;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
 
         .player-desc {
-            color: #ccc;
-            line-height: 1.6;
-            font-size: 1.1rem;
-            text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
-            transform: translateZ(15px);
+            color: #ddd;
+            line-height: 1.7;
+            font-size: 1.2rem;
+            text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+            transform: translateZ(20px);
+            transition: transform 0.3s ease-out;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 20px;
+            border-radius: 15px;
+            border-left: 4px solid #2a9fd6;
         }
 
         .social-section, .support-section {
@@ -247,7 +303,6 @@
             box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
             transform-style: preserve-3d;
             transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1, 1, 1);
-            will-change: transform;
         }
 
         /* 3D эффект вращения при наведении */
@@ -333,7 +388,7 @@
             --card-rgb: 0, 136, 204;
         }
         .social-card.yt { 
-            --card-color: #c31818; 
+            --card-color: #ff0000; 
             --card-rgb: 255, 0, 0;
         }
         .social-card.tt { 
@@ -617,11 +672,14 @@
             .avatar-section {
                 flex-direction: column;
                 text-align: center;
+                padding: 30px;
             }
             
             .avatar {
                 margin-right: 0;
                 margin-bottom: 30px;
+                width: 180px;
+                height: 180px;
             }
             
             .pixel-logo {
@@ -629,7 +687,12 @@
             }
             
             .player-name {
-                font-size: 2rem;
+                font-size: 2.2rem;
+            }
+            
+            .player-desc {
+                font-size: 1.1rem;
+                padding: 15px;
             }
             
             .social-grid {
@@ -656,14 +719,12 @@
     </style>
 </head>
 <body>
-    <!-- Видеофон -->
+    <!-- Видеофон из локального файла -->
     <div class="video-background">
-        <iframe 
-            src="https://www.youtube.com/embed/lVa8dP6AaOU?autoplay=1&mute=1&loop=1&playlist=lVa8dP6AaOU&controls=0&showinfo=0&modestbranding=1&rel=0&disablekb=1"
-            frameborder="0"
-            allow="autoplay; encrypted-media"
-            allowfullscreen>
-        </iframe>
+        <video autoplay muted loop playsinline>
+            <source src="video/main_menu_fon.mp4" type="video/mp4">
+            Ваш браузер не поддерживает видео тег.
+        </video>
     </div>
     
     <!-- Темный оверлей для читаемости -->
@@ -698,9 +759,9 @@
             <p class="tagline">Project Cataclysm | Стример | Команда Build</p>
         </header>
 
-        <section class="avatar-section">
+        <section class="avatar-section" id="avatar-section">
             <div class="avatar">
-                <img src="https://yt3.googleusercontent.com/h87SrzSeAONjWA6luSl6gkdgSghERzSySBnFL093I7n1bzbn5yCRlWTyFk7FiYO00V4e93D9hJc=s160-c-k-c0x00ffffff-no-rj" alt="аватар">
+                <img src="https://yt3.googleusercontent.com/h87SrzSeAONjWA6luSl6gkdgSghERzSySBnFL093I7n1bzbn5yCRlWTyFk7FiYO00V4e93D9hJc=s160-c-k-c0x00ffffff-no-rj" alt="аватар" class="avatar-img">
             </div>
             <div class="player-info">
                 <h2 class="player-name">Moris</h2>
@@ -809,6 +870,113 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const socialCards = document.querySelectorAll('.social-card, .support-card');
+            const avatarSection = document.getElementById('avatar-section');
+            
+            // Переменные для плавной 3D анимации
+            let isMouseOver = false;
+            let animationFrameId = null;
+            let currentRotateX = 0;
+            let currentRotateY = 0;
+            let targetRotateX = 0;
+            let targetRotateY = 0;
+            
+            // Константы для анимации
+            const MAX_ROTATION = 8; // Максимальный угол вращения
+            const ROTATION_SMOOTHING = 0.15; // Коэффициент сглаживания (0.1-0.3)
+            const RESET_SMOOTHING = 0.08; // Коэффициент сглаживания при сбросе
+            
+            // Функция для плавной анимации
+            function smoothAnimate() {
+                // Интерполяция текущих значений к целевым
+                if (isMouseOver) {
+                    // Плавное приближение к целевым значениям при наведении
+                    currentRotateX += (targetRotateX - currentRotateX) * ROTATION_SMOOTHING;
+                    currentRotateY += (targetRotateY - currentRotateY) * ROTATION_SMOOTHING;
+                } else {
+                    // Плавный возврат к нулю при уходе курсора
+                    currentRotateX += (0 - currentRotateX) * RESET_SMOOTHING;
+                    currentRotateY += (0 - currentRotateY) * RESET_SMOOTHING;
+                }
+                
+                // Применяем трансформацию
+                avatarSection.style.transform = `
+                    perspective(1200px) 
+                    rotateX(${currentRotateX}deg) 
+                    rotateY(${currentRotateY}deg) 
+                    scale3d(1, 1, 1)
+                `;
+                
+                // Обновляем элементы внутри avatar-section
+                const playerName = avatarSection.querySelector('.player-name');
+                const playerLevel = avatarSection.querySelector('.player-level');
+                const playerDesc = avatarSection.querySelector('.player-desc');
+                const avatarImg = avatarSection.querySelector('.avatar-img');
+                const avatar = avatarSection.querySelector('.avatar');
+                
+                if (playerName) {
+                    playerName.style.transform = `translateZ(${30 + Math.abs(currentRotateY) * 1.5}px) rotateY(${currentRotateY * 0.15}deg)`;
+                }
+                
+                if (playerLevel) {
+                    playerLevel.style.transform = `translateZ(${25 + Math.abs(currentRotateX) * 1}px) rotateX(${currentRotateX * 0.1}deg)`;
+                }
+                
+                if (playerDesc) {
+                    playerDesc.style.transform = `translateZ(${20 + Math.abs(currentRotateY) * 0.8}px) rotateY(${currentRotateY * 0.08}deg)`;
+                }
+                
+                if (avatarImg) {
+                    avatarImg.style.transform = `translateZ(${20 + Math.abs(currentRotateX) * 1.5}px)`;
+                }
+                
+                if (avatar) {
+                    avatar.style.transform = `translateZ(${Math.abs(currentRotateY) * 2}px) rotateY(${currentRotateY * 0.3}deg)`;
+                }
+                
+                // Продолжаем анимацию всегда, чтобы она могла перезапуститься
+                animationFrameId = requestAnimationFrame(smoothAnimate);
+            }
+            
+            // Обработчик движения мыши
+            function handleMouseMove(e) {
+                if (!isMouseOver) return;
+                
+                const rect = avatarSection.getBoundingClientRect();
+                const centerX = rect.left + rect.width / 2;
+                const centerY = rect.top + rect.height / 2;
+                
+                // Рассчитываем относительные координаты мыши внутри секции
+                const relX = (e.clientX - centerX) / (rect.width / 2);
+                const relY = (e.clientY - centerY) / (rect.height / 2);
+                
+                // Вычисляем целевые углы вращения
+                targetRotateX = -relY * MAX_ROTATION;
+                targetRotateY = relX * MAX_ROTATION;
+            }
+            
+            // Обработчики событий для avatar-section
+            avatarSection.addEventListener('mouseenter', function() {
+                isMouseOver = true;
+                avatarSection.style.transition = 'box-shadow 0.3s ease, border-color 0.3s ease';
+                
+                // Гарантируем, что анимация запущена
+                if (!animationFrameId) {
+                    animationFrameId = requestAnimationFrame(smoothAnimate);
+                }
+            });
+            
+            avatarSection.addEventListener('mousemove', function(e) {
+                handleMouseMove(e);
+            });
+            
+            avatarSection.addEventListener('mouseleave', function() {
+                isMouseOver = false;
+                targetRotateX = 0;
+                targetRotateY = 0;
+            });
+            
+            // Запускаем анимацию один раз при загрузке
+            animationFrameId = requestAnimationFrame(smoothAnimate);
             
             // Простая анимация появления при прокрутке
             const observerOptions = {
@@ -984,6 +1152,29 @@
                 }, 5000);
             });
             
+            // Проверка наличия видеофайла - БЕЗ УВЕДОМЛЕНИЯ
+            const videoElement = document.querySelector('.video-background video');
+            videoElement.addEventListener('error', function(e) {
+                console.error('Ошибка загрузки видео:', e);
+                
+                // Создаем запасной фон БЕЗ УВЕДОМЛЕНИЯ
+                const fallbackBackground = document.createElement('div');
+                fallbackBackground.style.position = 'fixed';
+                fallbackBackground.style.top = '0';
+                fallbackBackground.style.left = '0';
+                fallbackBackground.style.width = '100%';
+                fallbackBackground.style.height = '100%';
+                fallbackBackground.style.zIndex = '-2';
+                fallbackBackground.style.background = 'linear-gradient(135deg, #0a0a2a 0%, #1a1a4a 50%, #0a2a2a 100%)';
+                
+                // Заменяем видеофон на градиент БЕЗ УВЕДОМЛЕНИЯ
+                const videoContainer = document.querySelector('.video-background');
+                videoContainer.innerHTML = '';
+                videoContainer.appendChild(fallbackBackground);
+                
+                // УВЕДОМЛЕНИЕ УДАЛЕНО - больше не показываем пользователю
+            });
+            
             // Добавляем эффект "парящих" карточек при загрузке
             setTimeout(() => {
                 socialCards.forEach((card, index) => {
@@ -992,6 +1183,13 @@
                     }, index * 100);
                 });
             }, 500);
+            
+            // Очистка анимации при уходе со страницы
+            window.addEventListener('beforeunload', function() {
+                if (animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                }
+            });
         });
     </script>
 </body>
