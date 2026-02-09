@@ -719,12 +719,14 @@
     </style>
 </head>
 <body>
-    <!-- Видеофон из локального файла -->
+    <!-- Видеофон -->
     <div class="video-background">
-        <video autoplay muted loop playsinline>
-            <source src="video/main_menu_fon.mp4" type="video/mp4">
-            Ваш браузер не поддерживает видео тег.
-        </video>
+        <iframe 
+            src="https://www.youtube.com/embed/lVa8dP6AaOU?autoplay=1&mute=1&loop=1&playlist=lVa8dP6AaOU&controls=0&showinfo=0&modestbranding=1&rel=0&disablekb=1"
+            frameborder="0"
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
     </div>
     
     <!-- Темный оверлей для читаемости -->
@@ -857,13 +859,24 @@
                     </p>
                     <a href="https://boosty.to/moris" target="_blank" class="support-btn">Подписаться</a>
                 </div>
+				
+				<div class="support-card boosty">
+                    <div class="support-icon">
+                        <i class="fas fa-crown"></i>
+                    </div>
+                    <h3 class="support-title">Скачать игру</h3>
+                    <p class="support-desc">
+                        Скачивай игру по моей ссылке и получай бонусы в начале игры!.
+                    </p>
+                    <a href="https://boosty.to/moris" target="_blank" class="support-btn">Подписаться</a>
+                </div>
             </div>
         </section>
 
         <footer>
-            <p>© 2023 Moris | Все права защищены | Дизайн в темном игровом стиле</p>
+            <p>© 2026 Moris | Все права защищены | Project cataclysm blogers</p>
             <p>Присоединяйся к коммьюнити и становись частью игрового мира!</p>
-            <p>Project Cataclysm | Towkyd | Build отдел</p>
+            <p>Project Cataclysm | Moris | Build отдел</p>
         </footer>
     </div>
 
@@ -1084,10 +1097,7 @@
                         }).catch(error => {
                             // Пользователь не взаимодействовал с сайтом
                             showIndicator('Нажмите на сайт для включения музыки');
-                            console.log('Автовоспроизведение заблокировано. Нужно взаимодействие пользователя.');
-                            
-                            // Показываем сообщение пользователю
-                            alert('Для включения музыки нажмите на любую часть сайта, а затем на кнопку музыки');
+                            console.log('Автовоспроизведение заблокировано. Нужно взаимодействие пользователя.');                           
                             
                             // Добавляем обработчик для первого клика
                             document.addEventListener('click', enableAudioOnFirstClick, { once: true });
