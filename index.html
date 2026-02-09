@@ -113,6 +113,12 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(42, 159, 214, 0.2);
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .avatar-section:hover {
+            transform: perspective(1000px) rotateY(10deg) scale3d(1.02, 1.02, 1.02);
         }
 
         .avatar {
@@ -127,17 +133,20 @@
             margin-right: 40px;
             position: relative;
             animation: float 3s ease-in-out infinite;
+            transform-style: preserve-3d;
         }
 
         @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
+            0%, 100% { transform: translateY(0) rotateY(0deg); }
+            25% { transform: translateY(-10px) rotateY(5deg); }
+            75% { transform: translateY(-5px) rotateY(-5deg); }
         }
 
         .avatar img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            transform: translateZ(20px);
         }
 
         .avatar::before {
@@ -152,6 +161,7 @@
             z-index: -1;
             filter: blur(15px);
             opacity: 0.5;
+            transform: translateZ(-10px);
         }
 
         .player-info {
@@ -164,6 +174,7 @@
             text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
             margin-bottom: 10px;
             font-weight: 600;
+            transform: translateZ(30px);
         }
 
         .player-level {
@@ -175,6 +186,7 @@
             margin-bottom: 15px;
             box-shadow: 0 0 10px rgba(111, 66, 193, 0.5);
             color: white;
+            transform: translateZ(20px);
         }
 
         .player-desc {
@@ -182,6 +194,7 @@
             line-height: 1.6;
             font-size: 1.1rem;
             text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+            transform: translateZ(15px);
         }
 
         .social-section, .support-section {
@@ -213,8 +226,9 @@
         .social-grid {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
-            gap: 25px;
+            gap: 30px;
             margin-top: 30px;
+            perspective: 1500px;
         }
 
         .social-card, .support-card {
@@ -222,7 +236,7 @@
             border-radius: 15px;
             padding: 25px;
             text-align: center;
-            transition: all 0.3s ease;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             border: 1px solid rgba(255, 255, 255, 0.1);
             position: relative;
             overflow: hidden;
@@ -230,13 +244,68 @@
             height: 100%;
             display: flex;
             flex-direction: column;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1, 1, 1);
+            will-change: transform;
         }
 
+        /* 3D эффект вращения при наведении */
         .social-card:hover, .support-card:hover {
-            transform: translateY(-8px);
+            transform: perspective(1000px) rotateX(5deg) rotateY(15deg) rotateZ(1deg) scale3d(1.05, 1.05, 1.05);
             border-color: var(--card-color);
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.7),
+                0 0 40px rgba(var(--card-rgb), 0.4);
+            z-index: 10;
+        }
+
+        /* Эффект плавного вращения для разных карточек */
+        .social-card.tg:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(15deg) rotateZ(1deg) scale3d(1.05, 1.05, 1.05);
+        }
+        
+        .social-card.yt:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(-15deg) rotateZ(-1deg) scale3d(1.05, 1.05, 1.05);
+        }
+        
+        .social-card.tt:hover {
+            transform: perspective(1000px) rotateX(-5deg) rotateY(15deg) rotateZ(1deg) scale3d(1.05, 1.05, 1.05);
+        }
+        
+        .social-card.discord:hover {
+            transform: perspective(1000px) rotateX(-5deg) rotateY(-15deg) rotateZ(-1deg) scale3d(1.05, 1.05, 1.05);
+        }
+        
+        .support-card.donationalerts:hover {
+            transform: perspective(1000px) rotateX(8deg) rotateY(12deg) rotateZ(2deg) scale3d(1.05, 1.05, 1.05);
+        }
+        
+        .support-card.boosty:hover {
+            transform: perspective(1000px) rotateX(8deg) rotateY(-12deg) rotateZ(-2deg) scale3d(1.05, 1.05, 1.05);
+        }
+
+        /* Градиентный бэкграунд для карточек при наведении */
+        .social-card::after, .support-card::after {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, 
+                rgba(var(--card-rgb), 0.3), 
+                rgba(var(--card-rgb), 0.1), 
+                transparent);
+            border-radius: 17px;
+            z-index: -1;
+            opacity: 0;
+            transition: opacity 0.8s ease;
+            transform: translateZ(-10px);
+        }
+
+        .social-card:hover::after, .support-card:hover::after {
+            opacity: 1;
         }
 
         .social-card::before, .support-card::before {
@@ -247,20 +316,56 @@
             right: 0;
             height: 4px;
             background: var(--card-color);
+            transform: translateZ(20px);
+            transition: all 0.5s ease;
+            box-shadow: 0 0 15px var(--card-color);
         }
 
-        .social-card.tg { --card-color: #0088cc; }
-        .social-card.yt { --card-color: #ff0000; }
-        .social-card.tt { --card-color: #ff0050; }
-        .social-card.discord { --card-color: #5865f2; }
-        .social-card.donationalerts { --card-color: #ff6b00; }
-        .social-card.boosty { --card-color: #794afa; }
+        .social-card:hover::before, .support-card:hover::before {
+            height: 6px;
+            box-shadow: 0 0 25px var(--card-color);
+            transform: translateZ(40px);
+        }
+
+        /* Добавляем RGB значения для цветов карточек для использования в box-shadow */
+        .social-card.tg { 
+            --card-color: #0088cc; 
+            --card-rgb: 0, 136, 204;
+        }
+        .social-card.yt { 
+            --card-color: #ff0000; 
+            --card-rgb: 255, 0, 0;
+        }
+        .social-card.tt { 
+            --card-color: #ff0050; 
+            --card-rgb: 255, 0, 80;
+        }
+        .social-card.discord { 
+            --card-color: #5865f2; 
+            --card-rgb: 88, 101, 242;
+        }
+        .support-card.donationalerts { 
+            --card-color: #ff6b00; 
+            --card-rgb: 255, 107, 0;
+        }
+        .support-card.boosty { 
+            --card-color: #794afa; 
+            --card-rgb: 121, 74, 250;
+        }
 
         .social-icon, .support-icon {
             font-size: 3rem;
             margin-bottom: 20px;
             color: var(--card-color);
-            text-shadow: 0 0 10px var(--card-color);
+            text-shadow: 0 0 15px var(--card-color);
+            transform: translateZ(30px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .social-card:hover .social-icon, 
+        .support-card:hover .support-icon {
+            transform: translateZ(60px) scale(1.15) rotateY(10deg);
+            text-shadow: 0 0 30px var(--card-color);
         }
 
         .social-title, .support-title {
@@ -268,6 +373,15 @@
             margin-bottom: 10px;
             color: #fff;
             font-weight: 600;
+            transform: translateZ(25px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .social-card:hover .social-title, 
+        .support-card:hover .support-title {
+            transform: translateZ(50px) rotateY(5deg);
+            color: var(--card-color);
+            text-shadow: 0 0 10px var(--card-color);
         }
 
         .social-desc, .support-desc {
@@ -276,6 +390,14 @@
             line-height: 1.5;
             flex-grow: 1;
             text-shadow: 0 0 3px rgba(0, 0, 0, 0.5);
+            transform: translateZ(20px);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        .social-card:hover .social-desc, 
+        .support-card:hover .support-desc {
+            transform: translateZ(40px) rotateY(-5deg);
+            color: #ddd;
         }
 
         .social-btn, .support-btn {
@@ -286,25 +408,56 @@
             border-radius: 30px;
             text-decoration: none;
             font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 0 10px var(--card-color);
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 0 15px var(--card-color);
             margin-top: auto;
             border: none;
             cursor: pointer;
             font-size: 1rem;
+            transform: translateZ(40px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .social-btn::before, .support-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.8s ease;
         }
 
         .social-btn:hover, .support-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 0 20px var(--card-color);
+            transform: translateZ(80px) scale(1.1) rotateY(5deg);
+            box-shadow: 0 0 30px var(--card-color);
+        }
+
+        .social-btn:hover::before, .support-btn:hover::before {
+            left: 100%;
+        }
+
+        /* Эффект "всплывания" кнопки при наведении на карточку */
+        .social-card:hover .social-btn, 
+        .support-card:hover .support-btn {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 15px var(--card-color); }
+            50% { box-shadow: 0 0 30px var(--card-color); }
+            100% { box-shadow: 0 0 15px var(--card-color); }
         }
 
         /* Секция поддержки */
         .support-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
-            gap: 25px;
+            gap: 30px;
             margin-top: 30px;
+            perspective: 1500px;
         }
 
         .support-icon {
@@ -330,6 +483,12 @@
             background: rgba(15, 15, 20, 0.7);
             border-radius: 10px;
             backdrop-filter: blur(10px);
+            transform-style: preserve-3d;
+            transition: transform 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        footer:hover {
+            transform: perspective(1000px) rotateY(5deg) scale3d(1.02, 1.02, 1.02);
         }
 
         footer p {
@@ -346,6 +505,13 @@
             opacity: 0.2;
             z-index: 0;
             animation: spin 30s linear infinite;
+            transform-style: preserve-3d;
+        }
+
+        @keyframes spin {
+            0% { transform: rotateY(0deg) rotateZ(0deg); }
+            50% { transform: rotateY(180deg) rotateZ(5deg); }
+            100% { transform: rotateY(360deg) rotateZ(0deg); }
         }
 
         /* Кнопка управления музыкой */
@@ -369,14 +535,16 @@
             align-items: center;
             justify-content: center;
             backdrop-filter: blur(5px);
-            transition: all 0.3s;
+            transition: all 0.8s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             box-shadow: 0 0 15px rgba(42, 159, 214, 0.3);
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
         }
 
         .music-btn:hover {
             background: rgba(42, 159, 214, 0.5);
-            transform: scale(1.1);
-            box-shadow: 0 0 20px rgba(42, 159, 214, 0.5);
+            transform: perspective(1000px) rotateX(10deg) rotateY(15deg) scale3d(1.1, 1.1, 1.1);
+            box-shadow: 0 0 30px rgba(42, 159, 214, 0.5);
         }
 
         .music-btn.muted {
@@ -387,7 +555,8 @@
 
         .music-btn.muted:hover {
             background: rgba(255, 0, 0, 0.5);
-            box-shadow: 0 0 20px rgba(255, 0, 0, 0.5);
+            transform: perspective(1000px) rotateX(10deg) rotateY(15deg) scale3d(1.1, 1.1, 1.1);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.5);
         }
 
         /* Индикатор музыки */
@@ -404,10 +573,14 @@
             transition: opacity 0.3s;
             backdrop-filter: blur(5px);
             border: 1px solid rgba(42, 159, 214, 0.3);
+            transform-style: preserve-3d;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1);
+            transition: all 0.5s ease;
         }
 
         .music-indicator.show {
             opacity: 1;
+            transform: perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1) translateY(-5px);
         }
 
         /* Эффект частиц */
@@ -429,8 +602,8 @@
         }
 
         @keyframes float-particle {
-            0% { transform: translateY(100vh) translateX(0); }
-            100% { transform: translateY(-100px) translateX(100px); }
+            0% { transform: translateY(100vh) translateX(0) rotateY(0deg); }
+            100% { transform: translateY(-100px) translateX(100px) rotateY(360deg); }
         }
 
         /* Адаптивность */
@@ -470,6 +643,14 @@
             .music-control {
                 bottom: 70px;
                 left: 10px;
+            }
+            
+            /* Упрощаем 3D эффекты на мобильных */
+            .social-card:hover, .support-card:hover,
+            .avatar-section:hover,
+            footer:hover,
+            .music-btn:hover {
+                transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale3d(1.03, 1.03, 1.03);
             }
         }
     </style>
@@ -639,7 +820,7 @@
                 entries.forEach(entry => {
                     if (entry.isIntersecting) {
                         entry.target.style.opacity = '1';
-                        entry.target.style.transform = 'translateY(0)';
+                        entry.target.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1, 1, 1) translateY(0)';
                     }
                 });
             }, observerOptions);
@@ -647,7 +828,7 @@
             // Назначаем начальные стили и наблюдаем за элементами
             socialCards.forEach(card => {
                 card.style.opacity = '0';
-                card.style.transform = 'translateY(20px)';
+                card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1, 1, 1) translateY(20px)';
                 card.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
                 observer.observe(card);
             });
@@ -656,11 +837,11 @@
             const buttons = document.querySelectorAll('.social-btn, .support-btn');
             buttons.forEach(button => {
                 button.addEventListener('mouseenter', function() {
-                    this.style.transform = 'scale(1.05)';
+                    this.style.transform = 'translateZ(80px) scale(1.1) rotateY(5deg)';
                 });
                 
                 button.addEventListener('mouseleave', function() {
-                    this.style.transform = 'scale(1)';
+                    this.style.transform = 'translateZ(40px) scale(1) rotateY(0deg)';
                 });
             });
             
@@ -789,7 +970,7 @@
                 
                 // Добавляем сообщение в индикатор
                 const errorMsg = document.createElement('div');
-                errorMsg.innerHTML = 'Файл музыки не найден. Поместите файл в папку <strong>music/game-music.mp3</strong> или ';
+                errorMsg.innerHTML = 'Файл музыки не найден. Поместите файл в папку <strong>music/music_main_menu.mp3</strong> или ';
                 errorMsg.appendChild(downloadLink);
                 
                 musicIndicator.innerHTML = '';
@@ -802,6 +983,15 @@
                     musicIndicator.innerHTML = '';
                 }, 5000);
             });
+            
+            // Добавляем эффект "парящих" карточек при загрузке
+            setTimeout(() => {
+                socialCards.forEach((card, index) => {
+                    setTimeout(() => {
+                        card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) rotateZ(0deg) scale3d(1, 1, 1) translateY(0)';
+                    }, index * 100);
+                });
+            }, 500);
         });
     </script>
 </body>
