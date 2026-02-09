@@ -47,18 +47,18 @@
         }
         
         /* Правая часть (download-chrct) - справа и выходит за пределы, поверх всего */
-        .download-chrct {
-            position: absolute;
-            height: 240px; /* Выше основной кнопки */
-            width: 400px; /* Ширина правой части */
-            background-image: url(img/download_charct.png);
-            background-size: cover;
-            background-position: center;
-            z-index: 100; /* Максимальный z-index - поверх всего */
-            right: -50px; /* Выходит за правый край на 50px */
-            top: -20px; /* Выходит за верхний край на 20px */
-            pointer-events: none; /* Не нажимается */
-        }
+.download-chrct {
+    position: absolute;
+    height: 400px;
+    width: 400px;
+    background-image: url(img/download_charct.png);
+    background-size: cover;
+    background-position: center;
+    z-index: 10000;
+    right: -16px;
+    top: -200px;
+    pointer-events: none;
+}
         
         /* Ссылка охватывает всю основную кнопку */
         .download-link {
