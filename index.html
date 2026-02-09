@@ -7,131 +7,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- Подключаем отдельный CSS файл -->
     <link rel="stylesheet" href="css/style_beta.css">
-    <style>
-        /* Стили для объединенной загрузочной секции */
-        .download-container {
-            position: relative;
-            width: 1160px;
-            height: 200px;
-            margin: 0 auto 20px auto;
-            border-radius: 15px;
-            overflow: visible; /* Чтобы правая картинка могла выходить за пределы */
-        }
-        
-        /* Основная кнопка (download-img) - нижний слой */
-        .download-img {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            background-image: url(img/download_img.png);
-            background-size: cover;
-            background-position: center;
-            z-index: 1;
-            overflow: visible; /* Чтобы правая картинка могла выходить за пределы */
-        }
-        
-        /* Текстовая часть (download-text) - поверх download-img */
-        .download-text {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            border-radius: 15px;
-            background-image: url(img/download_text.png);
-            background-size: cover;
-            background-position: center;
-            z-index: 2;
-            pointer-events: none; /* Чтобы клики проходили сквозь к нижнему слою */
-            transition: transform 0.5s ease;
-            transform-origin: center;
-        }
-        
-        /* Правая часть (download-chrct) - справа и выходит за пределы, поверх всего */
-.download-chrct {
-    position: absolute;
-    height: 400px;
-    width: 400px;
-    background-image: url(img/download_charct.png);
-    background-size: cover;
-    background-position: center;
-    z-index: 10000;
-    right: -20px;
-    top: -200px;
-    pointer-events: none;
-}
-        
-        /* Ссылка охватывает всю основную кнопку */
-        .download-link {
-            display: block;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            text-decoration: none;
-            z-index: 50; /* Выше визуальных элементов, но ниже правой картинки */
-            left: 0;
-            top: 0;
-            border-radius: 15px;
-        }
-        
-        /* Эффект при наведении на ссылку */
-        .download-link:hover ~ .download-img {
-            filter: brightness(1.1);
-        }
-        
-        /* Эффект приближения для download-text при наведении */
-        .download-link:hover ~ .download-text {
-            transform: scale(1.05);
-        }
-        
-        /* Для правой картинки - никаких анимаций при наведении */
-        .download-chrct {
-            transition: none;
-        }
-        
-        /* Плавные переходы */
-        .download-img,
-        .download-text {
-            transition: all 0.5s ease;
-        }
-        
-        /* Адаптивность для мобильных */
-        @media (max-width: 1200px) {
-            .download-container {
-                width: 95%;
-                max-width: 1160px;
-            }
-        }
-        
-        @media (max-width: 768px) {
-            .download-container {
-                height: 150px;
-            }
-            
-            .download-chrct {
-                height: 180px;
-                width: 300px;
-                right: -30px;
-                top: -15px;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .download-container {
-                height: 120px;
-            }
-            
-            .download-chrct {
-                height: 140px;
-                width: 200px;
-                right: -20px;
-                top: -10px;
-            }
-            
-            .download-link:hover ~ .download-text {
-                transform: scale(1.03);
-            }
-        }
-    </style>
+    
 </head>
 <body>
     <!-- Видеофон -->
@@ -267,30 +143,16 @@
                     <div class="support-icon">
                         <i class="fas fa-crown"></i>
                     </div>
-                    <h3 class="support-title">Boosty</h3>
+                    <h3 class="support-title">Скачать Игру</h3>
                     <p class="support-desc">
-                        Подпишитесь на Boosty для получения эксклюзивного контента, 
-                        раннего доступа к видео и других бонусов для подписчиков.
-                        Уникальные материалы только для подписчиков.
+                        Хочешь начать выживание в новой Зоне не с пустыми руками?
+                        Регистрируйся по моей ссылке и получи стартовое снаряжение.
                     </p>
-                    <a href="https://boosty.to/moris" target="_blank" class="support-btn">Подписаться</a>
+                    <a href="https://boosty.to/moris" target="_blank" class="support-btn">Скачать</a>
                 </div>
 				
 				
         </section>
- <!-- Объединенная кнопка - три картинки друг на друге -->
-        <div class="download-container">
-            <!-- Ссылка на всю кнопку -->
-            <a href="https://t.me/rba_cs" target="_blank" class="download-link"></a>
-            
-            <!-- Нижний слой: download-img -->
-            <div class="download-img"></div>
-            
-            <!-- Средний слой: download-text -->
-            <div class="download-text"></div>
-            
-            <!-- Верхний слой справа: download-chrct (выходит за пределы) -->
-            <div class="download-chrct"></div>
         </div>
         <footer>
             <p>© 2026 Moris | Все права защищены | Project cataclysm blogers</p>
